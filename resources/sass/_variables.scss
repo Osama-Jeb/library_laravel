@@ -1,0 +1,61 @@
+// Body
+$body-bg: #f8fafc;
+
+// Typography
+$font-family-sans-serif: 'Nunito', sans-serif;
+$font-size-base: 0.9rem;
+$line-height-base: 1.6;
+
+//! Import bootstrap Function + Variable :
+@import "../../node_modules/bootstrap/scss/functions";
+@import "../../node_modules/bootstrap/scss/variables";
+
+//* Mes variables couleurs :
+$red : #e21919;
+$green: #109604;
+$blue : #1431d44f;
+$orange : #db850d;
+$lightBrown : #f3eab6;
+$brown: #d1ab85;
+$darkBrown : #7d5241;
+
+//* Notre customisations des couleurs :
+$custom-colors : ("red" : $red ,
+    "green": $green,
+    "blue" : $blue ,
+    "orange" : $orange ,
+    "lightBrown" : $lightBrown,
+    "brown" : $brown,
+    "darkBrown" : $darkBrown,
+);
+
+//* Fusionner les informations avec celles de bootstrap :
+$theme-colors : map-merge($theme-colors , $custom-colors);
+
+//& Notre valeur d'espace :
+$spacer : 20px;
+
+$custom-spacers : (0 : 0,
+    1 : $spacer*1 ,
+    2 : $spacer*2 ,
+    3 : $spacer*3 ,
+    4 : $spacer*4 ,
+    5 : $spacer*5 ,
+    6 : $spacer*6 ,
+    7 : $spacer*7 ,
+    8 : $spacer*20 ,
+);
+
+//& Fusionner et écrire nos valeurs d'espacement :
+$spacers : map-merge($spacers , $custom-spacers );
+
+
+
+//! TABLE VARIANTS
+$custom-table-variants: (
+    "lightBrown" : $lightBrown,
+    "brown" : $brown,
+    "darkBrown": $darkBrown,
+);
+
+$table-variants: map-merge($table-variants, $custom-table-variants);
