@@ -19,7 +19,7 @@
                         @csrf
                         <div>
                             <label for="title">Title</label>
-                            <input type="text" name="title" id="title" placeholder="Title" required>
+                            <input type="text" name="title" id="title" placeholder="Title"  required>
                         </div>
                         <div>
                             <label for="author">author</label>
@@ -30,8 +30,39 @@
                             <textarea type="text" name="summary" id="summary" rows="1" placeholder="Book Summary" required></textarea>
                         </div>
                         <div>
-                            <label for="img">img</label>
-                            <input type="file" name="img" id="img" placeholder="Image Link" required>
+                            <div class="d-flex align-items-center flex-column p-1">
+
+                                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <button class="btn btn-darkBrown rounded-pill ps-2 pe-2 active"
+                                            id="pills-file-tab" data-bs-toggle="pill" data-bs-target="#pills-file"
+                                            type="button" role="tab" aria-controls="pills-file"
+                                            aria-selected="true">file</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="btn btn-darkBrown rounded-pill ps-2 pe-2 ms-2" id="pills-url-tab"
+                                            data-bs-toggle="pill" data-bs-target="#pills-url" type="button"
+                                            role="tab" aria-controls="pills-url" aria-selected="false">url</button>
+                                    </li>
+
+                                </ul>
+                                <div class="tab-content text-center" id="pills-tabContent">
+                                    <div class="tab-pane fade show active" id="pills-file" role="tabpanel"
+                                        aria-labelledby="pills-file-tab" tabindex="0">
+                                        <div class="container">
+                                            <label for="imgFile">Image File: </label>
+                                            <input type="file" name="imgFile" id="imgFile" placeholder="Image File">
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="pills-url" role="tabpanel"
+                                        aria-labelledby="pills-url-tab" tabindex="0">
+                                        <div class="container">
+                                            <label for="imgUrl">Image Link: </label>
+                                            <input type="url" name="imgUrl" id="imgUrl" placeholder="Image Link">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div>
                             <label for="price">price</label>

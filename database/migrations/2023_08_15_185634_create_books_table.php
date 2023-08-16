@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string("title");
             $table->string("author");
             $table->longText("summary");
-            $table->string("img");
+            $table->string("imgFile");
+            $table->string("imgUrl");
             $table->integer("price");
             $table->integer("stock");
             $table->timestamps();

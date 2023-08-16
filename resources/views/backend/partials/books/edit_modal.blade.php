@@ -32,8 +32,8 @@
                             <textarea type="text" name="summary" id="summary" required>{{ old('title', $book->summary) }}</textarea>
                         </div>
                         <div>
-                            <label for="img">img</label>
-                            <input type="file" name="img" id="img">
+                            {{-- <label for="img">img</label>
+                            <input type="file" name="img" id="img"> --}}
                         </div>
                         <div>
                             <label for="price">price</label>

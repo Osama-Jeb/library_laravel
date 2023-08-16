@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class BookController extends Controller
 {
@@ -20,24 +21,49 @@ class BookController extends Controller
             "title" => ["required"],
             "author" => ["required"],
             "summary" => ["required"],
-            "img" => "required|image|mimes:png,jpg,jpeg|max:2048",
+            "imgFile" => "image|mimes:png,jpg,jpeg|max:2048",
+            // "imgUrl" => ["required"],
             "price" => ["required", "integer"],
             "stock" => ["required", "integer"],
         ]);
 
-        $request->file("img")->storePublicly('images/', 'public');
+        if (($request->file("imgFile") === null && $request->imgUrl === null) || ($request->file("imgFile") && $request->imgUrl)) {
+            // return with an error flash message
+
+            return back()->with("error", "Only one of the image source my be filled!!");
+
+        } else if ($request->file("imgFile") !== null) {
+            $request->file("imgFile")->storePublicly('images/', 'public');
+            Book::create([
+                "title" => $request->title,
+                "author" => $request->author,
+                "summary" => $request->summary,
+                "imgFile" =>  $request->file("imgFile")->hashName(),
+                "imgUrl" => Str::random(40),
+                "price" => $request->price,
+                "stock" => $request->stock,
+            ]);
+        } else {
+
+            // get the image from the link using the filegetcontents function
+            $token = Str::random(20);
+            $imageContent = file_get_contents($request->imgUrl);
+            Storage::put('public/images/' . $token . basename($request->imgUrl), $imageContent);
+
+            Book::create([
+                "title" => $request->title,
+                "author" => $request->author,
+                "summary" => $request->summary,
+                "imgFile" => $token . basename($request->imgUrl),
+                "imgUrl" => $token . basename($request->imgUrl),
+                "price" => $request->price,
+                "stock" => $request->stock,
+            ]);
+        }
 
 
-        Book::create([
-            "title" => $request->title,
-            "author" => $request->author,
-            "summary" => $request->summary,
-            "img" =>  $request->file("img")->hashName(),
-            "price" => $request->price,
-            "stock" => $request->stock,
-        ]);
 
-        return redirect()->back();
+        return redirect()->back()->with("success", "Book Successfully Added.");
     }
 
     public function update(Request $request, Book $book)
@@ -46,40 +72,23 @@ class BookController extends Controller
             "title" => ["required"],
             "author" => ["required"],
             "summary" => ["required"],
-            "img" => "image|mimes:png,jpg,jpeg|max:2048",
+            "imgFile" => "image|mimes:png,jpg,jpeg|max:2048",
             "price" => ["required", "integer"],
             "stock" => ["required", "integer"],
         ]);
 
-        // $path = "storage\images\\" . $book->img;
-        // if (file_exists($path)) {
-        //     unlink($path);
-        // }
-
-        // $fileName = time() . '.' . $request->img->extension();
-        // $request->img->storeAs('public/images', $fileName);
-
-        // $book->update([
-        //     "title" => $request->title,
-        //     "author" => $request->author,
-        //     "summary" => $request->summary,
-        //     "img" => $fileName,
-        //     "price" => $request->price,
-        //     "stock" => $request->stock,
-        // ]);
-
-        if ($request->file("img") !== null) {
+        if ($request->file("imgFile") !== null) {
             // delete from storage
-            Storage::disk("public")->delete("images/", $book->img);
+            Storage::disk("public")->delete("images/", $book->imgFile);
 
             // update image
-            $request->file("img")->storePublicly("images/", "public");
+            $request->file("imgFile")->storePublicly("images/", "public");
 
             $book->update([
                 "title" => $request->title,
                 "author" => $request->author,
                 "summary" => $request->summary,
-                "img" => $request->file("img")->hashName(),
+                "imgFile" => $request->file("imgFile")->hashName(),
                 "price" => $request->price,
                 "stock" => $request->stock,
             ]);
@@ -105,24 +114,16 @@ class BookController extends Controller
             $existBasket->delete();
         }
 
-        // $path = "storage/images/" . $book->img;
-        // if (file_exists($path)) {
-        //     unlink($path);
-        //     $book->delete();
-        // }
-
-        Storage::disk("public")->delete("images/", $book->img);
+        Storage::disk("public")->delete("images/" . $book->imgFile);
 
         return redirect()->back();
     }
 
     public function download(Book $book)
     {
-        // $path = "storage/images//" . $book->img;
-        // if (file_exists($path)) {
-        //     return response()->download($path);
-        // }
-
-        return Storage::disk("public")->download("images/" . $book->img, $book->img);
+        $path = "storage/images//" . $book->imgFile;
+        if (file_exists($path)) {
+            return response()->download($path);
+        }
     }
 }

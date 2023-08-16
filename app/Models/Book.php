@@ -13,7 +13,8 @@ class Book extends Model
         "title",
         "author",
         "summary",
-        "img",
+        "imgFile",
+        "imgUrl",
         "price",
         "stock",
     ];

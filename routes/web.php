@@ -23,20 +23,19 @@ Route::get("/", [HomeController::class, "index"])->name("home.index");
 //~ Home Show Page
 Route::get("/show/{book}", [HomeController::class, "show"])->name("home.show");
 
-//- BOOKS ADMIN PAGE
+//? BOOKS ADMIN PAGE
 Route::get("/books", [BookController::class, "index"])->name("books.index");
 
-
-//- BOOKS ADD Function
+//? BOOKS ADD Function
 Route::post("/books/store", [BookController::class, "store"])->name("books.store");
 
-//- BOOKS Update Function
+//? BOOKS Update Function
 Route::post("/books/update/{book}", [BookController::class, "update"])->name("books.update");
 
-//- BOOKS DELELTE Function
+//? BOOKS DELELTE Function
 Route::delete("/books/delete/{book}", [BookController::class, "destroy"])->name("books.delete");
 
-//- BOOKS Download Cover Function
+//? BOOKS Download Cover Function
 Route::get("/books/download/{book}", [BookController::class, "download"])->name("book.download");
 
 //^^ Basket Page
